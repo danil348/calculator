@@ -243,13 +243,28 @@ export default {
 				if(this.splitresult[0].includes('=') == 1){
 					this.splitresult[0] = this.splitresult[0].slice(1,this.splitresult[0].length-1)
 				}
-				let ans = eval(this.splitresult.join(''))
+				let ans = 0
+				this.splitresult = this.splitresult.join('')
+				if(calcPercent == true && (this.splitresult.includes('-') || this.splitresult.includes('+'))){
+					this.splitresult = this.splitresult.split(/([+-])/)
+						this.splitresult[this.splitresult.length-1] = '%'+String(eval(this.splitresult.splice(this.splitresult.length - 1,1).join('')))
+						this.splitresult = this.splitresult.join('')
+						this.splitresult = this.splitresult.split('%')
+						if(this.splitresult[0][this.splitresult[0].length-1] == '-'){
+							ans = eval(this.splitresult[0].slice(0,this.splitresult[0].length-1)) - eval(this.splitresult[0].slice(0,this.splitresult[0].length-1)) *  this.splitresult[1] / 100
+						}else{
+							ans = eval(this.splitresult[0].slice(0,this.splitresult[0].length-1)) + eval(this.splitresult[0].slice(0,this.splitresult[0].length-1)) *  this.splitresult[1] / 100
+						}
+				}else if(calcPercent == true){
+					ans = eval(this.splitresult) / 100
+				}else{
+					ans = eval(this.splitresult)
+				}
 				if(isNaN(ans) == true){
-						ans=0
+					ans=0
 				}
 				if(calcPercent == true){
-					ans /= 100
-					if(isNaN(ans) == true || ans < 0){
+					if(isNaN(ans) == true){
 						ans=0
 					}
 					if(this.result.includes('=')){
@@ -261,7 +276,7 @@ export default {
 				}
 				localStorage.setItem("lStmpResults", JSON.stringify(this.tmpResults));
 				this.tmpTask = this.result
-				this.splitresult = [String(ans)]
+				//this.splitresult = [String(ans)]
 				this.result = '=' + ans
 				this.operationsCount = 0
 				this.isAns = true
