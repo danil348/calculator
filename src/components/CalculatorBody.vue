@@ -67,8 +67,15 @@ export default {
 					this.result = this.result.slice(1, this.result.length)
 					this.isAns = false
 				}
+
+				if(this.splitresult[this.splitresult.length-1][this.splitresult[this.splitresult.length-1]]=='0' && this.numTest(number) == true){
+					return
+				}
+
+
 				if((this.result == '' || this.numTest(this.result) == false) && (number == '/' || number == '*' || number == '+')){
 					this.result = '0'
+					this.bracketClose = true
 					this.splitResult()
 					return
 				}
@@ -77,7 +84,6 @@ export default {
 					this.splitResult()
 					return
 				}
-
 				if(number == '+' || number == '-'){
 					if(this.result == ''){
 						if(number == '-'){
@@ -160,9 +166,9 @@ export default {
 					return
 				}
 
-				if(number == '.' && this.splitresult[this.splitresult.length-1].includes('.') == false && 
-					this.numTest(this.splitresult[this.splitresult.length-1]) == true){
-					if(this.result == ''){
+				if((number == '.' && this.splitresult[this.splitresult.length-1].includes('.') == false && 
+					this.numTest(this.splitresult[this.splitresult.length-1]) == true) || this.result == ''){
+					if(this.result == '' && this.numTest(number) == false){
 						this.result = '0' + number
 						this.splitResult()
 						return
@@ -279,12 +285,9 @@ export default {
 					ans = eval(this.splitresult)
 				}
 				if(isNaN(ans) == true){
-					ans=0
+					ans='ошибка'
 				}
 				if(calcPercent == true){
-					if(isNaN(ans) == true){
-						ans=0
-					}
 					if(this.result.includes('=')){
 						this.result = this.result.slice(1,this.result.length)
 					}
