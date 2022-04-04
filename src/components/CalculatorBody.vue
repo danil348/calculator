@@ -216,7 +216,7 @@ export default {
 		calc(calcPercent){
 			this.splitResult()
 			if(this.bracketClose == true && (this.operationsCount != 0 || calcPercent == true) && 
-				this.regTest(this.result[this.result.length-1]) == false){
+				this.regTest(this.result[this.result.length-1]) == false && this.result[this.result.length-1]!="^"){
 				this.splitresult.forEach(function(element,index,arr) {
 					if(element[0] == '(' && element[element.length - 1] == ')'){
 						arr[index] = element.slice(1,element.length-1)
@@ -293,14 +293,15 @@ export default {
 						this.result = this.result.slice(1,this.result.length)
 					}
 					this.tmpResults.push([this.result + '%',"=" + ans])
+				this.tmpTask = this.result+'%'
 				}else{
 					this.tmpResults.push([this.result,"=" + ans])
+					this.tmpTask = this.result
 				}
 				if(this.tmpResults.length > 100){
 					this.tmpResults = this.tmpResults.splice(1,this.tmpResults.length)
 				}
 				localStorage.setItem("lStmpResults", JSON.stringify(this.tmpResults));
-				this.tmpTask = this.result
 				this.splitresult = [String(ans)]
 				this.result = '=' + ans
 				this.operationsCount = 0
