@@ -21,7 +21,6 @@ export default {
   min-height: 100vh;
   flex: 1 1 auto;
   background: rgb(20, 20, 20);
-  //background: radial-gradient(circle, rgb(255, 255, 255) 20%, rgb(0, 0, 0) 100%);
   justify-content: center;
     display: flex;
     position: relative;

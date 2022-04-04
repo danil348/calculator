@@ -107,7 +107,7 @@ export default {
 						return
 					}
 					if(this.result[this.result.length-1] != '('  && this.regTest(this.result[this.result.length-1]) == false && number == ')'
-					&& this.result[this.result.length-1] != '.'){
+					&& this.result[this.result.length-1] != '.' && this.result[this.result.length-1] != '^'){
 						this.result += number
 						this.bracketClose = true 
 						this.splitResult()
@@ -243,8 +243,6 @@ export default {
 						arr[index] = String(Math.pow(eval(element.join('')), 0.5))
 					}
 				});
-
-				console.log(this.splitresult)
 				
 				if(this.splitresult[0].includes('=') == 1){
 					this.splitresult[0] = this.splitresult[0].slice(1,this.splitresult[0].length-1)
