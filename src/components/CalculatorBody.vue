@@ -122,10 +122,6 @@ export default {
 						return
 					}
 					if(this.result[this.result.length-1] == '^' && number == '('){
-						this.operationsCount++
-						this.result += number
-						this.bracketClose = false 
-						this.splitResult()
 						return
 					}
 					if((this.result[this.result.length-1] == ')' || this.regTest(this.result[this.result.length-1]) == false) && 
