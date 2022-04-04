@@ -55,7 +55,7 @@ export default {
 			this.bracketClose = true
 		},
 		input(number){
-			if(this.checkingLength() < 15 && this.operationsCount < this.maxOperations){
+			if(this.operationsCount < this.maxOperations){
 				if(this.result == "0" && this.isAns == false){
 					this.result = ""
 				}else if(this.isAns == true){
@@ -191,8 +191,10 @@ export default {
 			}else if(number == ')' && this.bracketClose == false){
 				this.bracketClose = true
 				this.result += number
-			}else if(this.numTest(number) == true){
+			}else if(this.numTest(number) == true && this.checkingLength() < 15){
+				console.log("asdasd")
 				this.result += number
+				this.splitResult()
 			}
 		},
 		calc(calcPercent){
@@ -278,6 +280,9 @@ export default {
 				}else{
 					this.tmpResults.push([this.result,"=" + ans])
 				}
+				if(this.tmpResults.length > 100){
+					this.tmpResults = this.tmpResults.splice(1,this.tmpResults.length)
+				}
 				localStorage.setItem("lStmpResults", JSON.stringify(this.tmpResults));
 				this.tmpTask = this.result
 				this.splitresult = [String(ans)]
@@ -332,6 +337,7 @@ export default {
 		max-height: 100%;
 	}
 	&__screen-wrapper{
+		word-break: break-all;
 		position: relative;
 		padding: 10px 20px 5px 10px;
 		text-align: end;

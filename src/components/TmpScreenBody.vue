@@ -1,5 +1,5 @@
 <template>
-	<div class="tmp__screen">
+	<div class="tmp__screen" id="tmp__screen">
 		<div class="tmp__item" v-for="res in tmpResults" :key="res.id">{{res[0]}}{{res[1]}}</div>
 	</div>
 </template>
@@ -14,6 +14,14 @@ export default {
 				return
 			}
 		}
+	},
+	mounted(){
+		let tmpScreen = document.getElementById("tmp__screen")
+		tmpScreen.scrollTop = tmpScreen.scrollHeight;
+	},
+	updated(){
+		let tmpScreen = document.getElementById("tmp__screen")
+		tmpScreen.scrollTop = tmpScreen.scrollHeight;
 	}
 }
 </script>
@@ -52,6 +60,10 @@ export default {
 		}
 	}
 	&__item{
+		&:not(:last-child){
+			border-bottom: 1px solid $borderColor;
+		}
+		padding: 0px 0px 10px;
 		margin: 10px 0px;
 	}
 }
