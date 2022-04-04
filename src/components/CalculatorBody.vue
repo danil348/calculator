@@ -60,7 +60,7 @@ export default {
 					this.result = ""
 					this.splitResult()
 				}else if(this.isAns == true){
-					if(this.result == "=0"){
+					if(this.result == "=0" || this.result == "=ошибка"){
 						this.result = ""
 						this.splitResult()
 					}
@@ -68,7 +68,9 @@ export default {
 					this.isAns = false
 				}
 
-				if(this.splitresult[this.splitresult.length-1][this.splitresult[this.splitresult.length-1]]=='0' && this.numTest(number) == true){
+				if(((this.splitresult[this.splitresult.length-1][0]=='0' && this.numTest(number) == true) || 
+					(this.splitresult[this.splitresult.length-1][0]=='(' && this.numTest(number) == true && this.splitresult[this.splitresult.length-1][1]=='0') ||
+					(this.splitresult[this.splitresult.length-1].includes("√(") == true && this.numTest(number) == true && this.splitresult[this.splitresult.length-1][2] =='0')) && this.splitresult[this.splitresult.length-1].includes('.') == false){
 					return
 				}
 
@@ -216,9 +218,11 @@ export default {
 			}
 		},
 		calc(calcPercent){
-			this.splitResult()
 			if(this.bracketClose == true && (this.operationsCount != 0 || calcPercent == true) && 
-				this.regTest(this.result[this.result.length-1]) == false && this.result[this.result.length-1]!="^"){
+				this.regTest(this.result[this.result.length-1]) == false && this.result[this.result.length-1]!="^" && this.result != "=ошибка"){
+					
+				this.splitResult()
+
 				this.splitresult.forEach(function(element,index,arr) {
 					if(element[0] == '(' && element[element.length - 1] == ')'){
 						arr[index] = element.slice(1,element.length-1)
@@ -285,14 +289,14 @@ export default {
 					ans = eval(this.splitresult)
 				}
 				if(isNaN(ans) == true){
-					ans='ошибка'
+					ans="ошибка"
 				}
 				if(calcPercent == true){
 					if(this.result.includes('=')){
 						this.result = this.result.slice(1,this.result.length)
 					}
 					this.tmpResults.push([this.result + '%',"=" + ans])
-				this.tmpTask = this.result+'%'
+					this.tmpTask = this.result+'%'
 				}else{
 					this.tmpResults.push([this.result,"=" + ans])
 					this.tmpTask = this.result
