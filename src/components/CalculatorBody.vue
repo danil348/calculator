@@ -176,7 +176,8 @@ export default {
 					return
 				}
 
-				if((number == '/' || number == '*') && (this.result[this.result.length-1] == '.' || this.result[this.result.length-1] == '(')){
+				if((number == '/' || number == '*') && (this.result[this.result.length-1] == '.' || this.result[this.result.length-1] == '(' 
+				|| this.result[this.result.length-1] == '^')){
 					return
 				}
 				
@@ -214,6 +215,17 @@ export default {
 				}
 
 				this.splitresult.forEach(function(element,index,arr) {
+					if(element.includes('^') == true && element != '^'){
+						if(element[0] != '√'){
+							arr[index] = String(eval(element.split('^').join('**')))
+						}
+					}else if(element == '^'){
+						arr[index-1] = String(Math.pow(arr[index-1],arr[index+1]))
+						arr = arr.splice(index,2)
+					}
+				});
+
+				this.splitresult.forEach(function(element,index,arr) {
 					if(element[0] == '(' && element[element.length - 1] == ')'){
 						arr[index] = String(eval(element))
 					}
@@ -232,14 +244,8 @@ export default {
 					}
 				});
 
-				this.splitresult.forEach(function(element,index,arr) {
-					if(element == '^'){
-						let x = Number(arr[index-1])
-						let pow = Number(arr[index+1])
-						arr[index-1] = String(Math.pow(Number(x),Number(pow)))
-						arr = arr.splice(index,2)
-					}
-				});
+				console.log(this.splitresult)
+				
 				if(this.splitresult[0].includes('=') == 1){
 					this.splitresult[0] = this.splitresult[0].slice(1,this.splitresult[0].length-1)
 				}
@@ -276,7 +282,7 @@ export default {
 				}
 				localStorage.setItem("lStmpResults", JSON.stringify(this.tmpResults));
 				this.tmpTask = this.result
-				//this.splitresult = [String(ans)]
+				this.splitresult = [String(ans)]
 				this.result = '=' + ans
 				this.operationsCount = 0
 				this.isAns = true
