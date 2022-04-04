@@ -58,19 +58,23 @@ export default {
 			if(this.operationsCount < this.maxOperations){
 				if(this.result == "0" && this.isAns == false){
 					this.result = ""
+					this.splitResult()
 				}else if(this.isAns == true){
 					if(this.result == "=0"){
 						this.result = ""
+						this.splitResult()
 					}
 					this.result = this.result.slice(1, this.result.length)
 					this.isAns = false
 				}
 				if((this.result == '' || this.numTest(this.result) == false) && (number == '/' || number == '*' || number == '+')){
 					this.result = '0'
+					this.splitResult()
 					return
 				}
 				if(this.regTest(this.result[this.result.length-1]) == true &&  this.regTest(number) == true){
 					this.result = this.result.slice(0,this.result.length-1) + number
+					this.splitResult()
 					return
 				}
 
@@ -78,8 +82,10 @@ export default {
 					if(this.result == ''){
 						if(number == '-'){
 							this.result+=number
+							this.splitResult()
 						}else{
 							this.result = '0'
+							this.splitResult()
 						}
 						return
 					}
@@ -87,11 +93,13 @@ export default {
 						this.result[this.result.length-1] == '('){
 						this.result+=number
 						this.operationsCount++
+						this.splitResult()
 						return
 					}
 					if(this.result[this.result.length - 1] == '*' || this.result[this.result.length - 1] == '/' || 
 					this.result[this.result.length - 1] == '-' || this.result[this.result.length - 1] == '+'){
 						this.result = this.result.slice(0,this.result.length-1) + number
+						this.splitResult()
 					}
 					return
 				}
@@ -140,6 +148,7 @@ export default {
 				if(number == '^'){
 					if(this.result == ''){
 						this.result = '0'
+						this.splitResult()
 						return
 					}
 					if(this.result[this.result.length-1] == '^' || this.splitresult[this.splitresult.length - 2] == '^'){
@@ -149,6 +158,7 @@ export default {
 						this.result[this.result.length-1] != ')' && this.result[this.result.length-1] != '.'){
 						this.operationsCount++
 						this.result += number
+						this.splitResult()
 						return
 					}
 					return
@@ -158,6 +168,7 @@ export default {
 					this.numTest(this.splitresult[this.splitresult.length-1]) == true){
 					if(this.result == ''){
 						this.result = '0' + number
+						this.splitResult()
 						return
 					}
 					if(this.numTest(this.result[this.result.length-1]) == true){
@@ -168,6 +179,7 @@ export default {
 					if(this.regTest(this.result[this.result.length-1]) == false && this.result[this.result.length-1] != '(' &&
 					this.result[this.result.length-1] != ')' && this.result[this.result.length-1] != '.'){
 						this.result += number
+						this.splitResult()
 						return
 					}else{
 						return
@@ -184,15 +196,19 @@ export default {
 				if(this.numTest(number) == true && this.result[this.result.length-1] == ')'){
 					return
 				}
-
-				this.result += number
-				this.operationsCount += this.regTest(number)
-				this.splitResult()
+				if(this.checkingLength() < 15 && this.numTest(number) == true){
+					this.result += number
+					this.splitResult()
+					return
+				}else if(this.numTest(number) == false){
+					this.result += number
+					this.operationsCount += this.regTest(number)
+					this.splitResult()
+				}
 			}else if(number == ')' && this.bracketClose == false){
 				this.bracketClose = true
 				this.result += number
 			}else if(this.numTest(number) == true && this.checkingLength() < 15){
-				console.log("asdasd")
 				this.result += number
 				this.splitResult()
 			}
